@@ -15,4 +15,4 @@
 
 #### Innodb存储引擎特性：
 
-![image-20210902210845611](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210902210845611.png)
+![image](https://user-images.githubusercontent.com/87631434/131850009-b9789e25-a6ef-46f1-b9ba-51d5634045d9.png)
