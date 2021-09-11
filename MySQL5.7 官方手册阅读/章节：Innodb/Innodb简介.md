@@ -1,6 +1,6 @@
 # **Innodb简介**
 
-`InnoDB`是一种兼顾高可靠性和高性能的通用存储引擎。在 MySQL 5.7 中，`InnoDB`是默认的 MySQL 存储引擎（从mysql5.5.5开始）。除非配置了不同的默认存储引擎，否则发出[`CREATE TABLE`](https://dev.mysql.com/doc/refman/5.7/en/create-table.html)不带`ENGINE` 子句的语句会创建一个`InnoDB`表。
+`InnoDB`是一种兼顾高可靠性和高性能的通用存储引擎。在 MySQL 5.7 中，`InnoDB`是默认的 MySQL 存储引擎（从mysql5.5.5开始为默认存储引擎）。除非配置了不同的默认存储引擎，否则发出[`CREATE TABLE`](https://dev.mysql.com/doc/refman/5.7/en/create-table.html)不带`ENGINE` 子句的语句会创建一个`InnoDB`表。
 
 
 
