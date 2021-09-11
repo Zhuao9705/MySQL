@@ -1,0 +1,17 @@
+### 使用 InnoDB 进行测试和基准测试
+
+如果`InnoDB`不是默认存储引擎，则可以通过使用命令行中定义的[--default-storage-engine=InnoDB](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/server-system-variables.html#sysvar_default_storage_engine)或 MySQL 服务器选项文件的`[mysqld]`部分中定义的[default-storage-engine=innodb](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/server-system-variables.html#sysvar_default_storage_engine)重新启动服务器，来确定数据库服务器或应用程序是否可以正确使用`InnoDB`。
+
+由于更改默认存储引擎仅会影响新 table 的创建，因此，请运行所有应用程序安装和设置步骤以确认所有 table 均已正确安装。然后练习所有应用程序功能，以确保所有数据加载，编辑和查询功能都能正常工作。如果 table 依赖于另一个存储引擎特有的功能，则会收到错误消息。将`ENGINE=other_engine_name`子句添加到[CREATE TABLE](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/create-table.html)语句中，以避免出现此错误。
+
+如果您没有对存储引擎做出深思熟虑的决定，并且想要预览使用 创建时某些表的工作方式`InnoDB`，请[`ALTER TABLE table_name ENGINE=InnoDB;`](https://dev.mysql.com/doc/refman/5.7/en/alter-table.html)为每个表发出命令 。或者，要在不干扰原始表的情况下运行测试查询和其他语句，请复制：
+
+```
+CREATE TABLE ... ENGINE=InnoDB AS SELECT * FROM other_engine_table;
+```
+
+要在实际工作负载下评估完整应用程序的性能，请安装最新的 MySQL 服务器并运行基准测试。
+
+测试完整的应用程序生命周期，从安装到大量使用，再到服务器重启。在数据库繁忙时杀死服务器进程以模拟断电，并在重新启动服务器时验证数据是否成功恢复。
+
+测试任何复制配置，尤其是当您在源服务器和副本上使用不同的 MySQL 版本和选项时。
