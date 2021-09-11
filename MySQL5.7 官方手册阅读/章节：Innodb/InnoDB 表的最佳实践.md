@@ -1,0 +1,27 @@
+###  InnoDB 表的最佳实践
+
+- **使用最常查询的一列或多列为每个表指定一个主键，如果没有明显的主键，则指定一个自增值。**
+
+- 在根据多个表中的相同 ID 值从多个表中提取数据的地方使用连接。为了快速连接性能，在连接列上定义外键，并在每个表中用相同的数据类型声明这些列。添加外键确保引用的列被索引，这可以提高性能。外键还会将删除和更新传播到所有受影响的表，并在父表中不存在相应 ID 时阻止在子表中插入数据。**但这边注意，在阿里巴巴java开发手册：Mysql数据库：SQL语句第六条中提到**
+
+  6. > 【强制】不得使用外键与级联，一切外键概念必须在应用层解决
+
+     > 说明：以学生和成绩的关系为例，学生表中的 student_id是主键，那么成绩表中的 student_id
+     >
+     > 则为外键。如果更新学生表中的 student_id，同时触发成绩表中的 student_id 更新，即为
+     >
+     > 级联更新。外键与级联更新适用于单机低并发，不适合分布式、高并发集群；级联更新是强阻
+     >
+     > 塞，存在数据库更新风暴的风险；外键影响数据库的插入速度。
+
+- **关闭自动提交。**每秒提交数百次会限制性能（受存储设备的写入速度限制）。
+
+- **通过用`START TRANSACTION`和 `COMMIT`语句将相关的 DML 操作分组到事务中。**虽然您不想太频繁地提交，但您也不想发出大量运行数小时而不提交的 [`INSERT`](https://dev.mysql.com/doc/refman/5.7/en/insert.html)、 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html)、 或 [`DELETE`](https://dev.mysql.com/doc/refman/5.7/en/delete.html)语句。
+
+- **不要使用[`LOCK TABLES`](https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html) 语句。**`InnoDB`可以在不牺牲可靠性或高性能的情况下同时处理对同一个表的所有读取和写入的多个会话。要获得对一组行的独占写访问权限，请使用 [`SELECT ... FOR UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html)语法锁定您打算更新的行。
+
+- 启用 [`innodb_file_per_table`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_file_per_table) 变量或使用通用表空间将表的数据和索引放入单独的文件而不是系统表空间。[`innodb_file_per_table`](https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html#sysvar_innodb_file_per_table) 默认情况下启用该 变量。
+
+- 评估您的数据和访问模式是否受益于`InnoDB`表或页面压缩功能。您可以在`InnoDB`不牺牲读/写能力的情况下压缩表。
+
+- 使用[`--sql_mode=NO_ENGINE_SUBSTITUTION`](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_sql_mode) 选项运行服务器，以防止使用您不想使用的存储引擎创建表。
