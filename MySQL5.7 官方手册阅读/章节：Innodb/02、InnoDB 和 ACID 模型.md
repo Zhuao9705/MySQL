@@ -10,7 +10,7 @@
 - **I：** ：隔离。
 - **D** ：耐久性。
 
-### Atomicity
+## Atomicity
 
 **这边解释一下原子性：事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么全部失败回滚；**
 
@@ -21,7 +21,7 @@ ACID 模型的“原子性”方面主要涉及`InnoDB` [transactions](https://w
 - [ROLLBACK](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/commit.html) statement.
 - `INFORMATION_SCHEMA`table 中的操作数据。
 
-### Consistency
+## Consistency
 
 **简单解释： 一致性是指，在每次提交或回滚之后以及正在进行事务期间，数据库始终保持一致状态。如果正在多个 table 之间更新相关数据，则查询将看到所有旧值或所有新值，而不是新旧值的混合。**
 
@@ -30,7 +30,7 @@ ACID 模型的“一致性”方面主要涉及内部`InnoDB`处理，以防止�
 - `InnoDB` [doublewrite buffer](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/glossary.html#glos_doublewrite_buffer).
 - `InnoDB` [crash recovery](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/glossary.html#glos_crash_recovery).
 
-### Isolation
+## Isolation
 
  **简单解释：隔离性是指，并发执行的各个事务之间不能互相干扰，即一个事务内部的操作及使用的数据，对并发的其他事务是隔离的。**
 
@@ -40,7 +40,7 @@ ACID 模型的“隔离”方面主要涉及`InnoDB` [transactions](https://www.
 - `SET ISOLATION LEVEL`声明。
 - `InnoDB` [locking](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/glossary.html#glos_locking)的底层详细信息。在性能调整期间，您可以通过`INFORMATION_SCHEMA`table 查看这些详细信息。
 
-### Durability
+## Durability
 
 **简单解释：持久性是指，一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。**
 
